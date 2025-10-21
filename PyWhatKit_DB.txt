@@ -1,0 +1,50 @@
+Date: 21/10/2025
+Time: 20:42
+Phone Number: +393397457104
+Message: Ciao! Ti scrivo riguardo all'evento di domani: Titolo 1.Dalle ore: 06:30 alle ore: 07:30
+--------------------
+Date: 21/10/2025
+Time: 20:43
+Phone Number: +393397457104
+Message: Ciao! Ti scrivo riguardo all'evento di domani: Titolo 1.Dalle ore: 06:30 alle ore: 07:30
+--------------------
+Date: 21/10/2025
+Time: 20:44
+Phone Number: +393397457104
+Message: Ciao! Ti scrivo riguardo all'evento di domani: Titolo 1.Dalle ore: 06:30 alle ore: 07:30
+--------------------
+Date: 22/10/2025
+Time: 0:7
+Phone Number: +393397457104
+Message: Ciao! Ti scrivo riguardo all'evento di domani: Titolo 1.Dalle ore: 06:30 alle ore: 07:30
+--------------------
+Date: 22/10/2025
+Time: 0:9
+Phone Number: +393397457104
+Message: Ciao! Ti scrivo riguardo all'evento di domani: Titolo 1.Dalle ore: 06:30 alle ore: 07:30
+--------------------
+Date: 22/10/2025
+Time: 0:10
+Phone Number: +393397457104
+Message: Ciao! Ti scrivo riguardo all'evento di domani: Titolo 1.Dalle ore: 06:30 alle ore: 07:30
+--------------------
+Date: 22/10/2025
+Time: 0:20
+Phone Number: +393397457104
+Message: 📅 Promemoria giornaliero:[00:20:05] Nessun evento trovato per domani.
+--------------------
+Date: 22/10/2025
+Time: 0:22
+Phone Number: +393397457104
+Message: Ciao! Ti scrivo riguardo all'evento di domani: Eventi 1.Dalle ore: 22:00 alle ore: 23:00
+--------------------
+Date: 22/10/2025
+Time: 0:22
+Phone Number: +393397457104
+Message: Ciao! Ti scrivo riguardo all'evento di domani: Evento 2.Dalle ore: 00:00 alle ore: 01:00
+--------------------
+Date: 22/10/2025
+Time: 0:23
+Phone Number: +393397457104
+Message: 📅 Promemoria giornaliero:[00:20:05] Nessun evento trovato per domani.[00:22:11] Messaggio inviato a +393397457104 per evento 'Eventi 1' alle 22:00[00:22:36] Invio completato.[00:22:42] Messaggio inviato a +393397457104 per evento 'Evento 2' alle 00:00[00:23:01] Invio completato.
+--------------------
