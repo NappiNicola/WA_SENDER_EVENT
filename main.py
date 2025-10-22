@@ -1,6 +1,7 @@
 from calendar_api import get_tomorrow_events
 from whatsapp_sender import extract_phone, send_whatsapp_message, extract_time
-from config import API_URL, MY_PHONE
+# from config import API_URL, MY_PHONE
+from config_loader import API_URL, MY_PHONE
 from logger_module import write_log, read_log
 from logger_execution import write_log as write_ex, read_log as red_ex
 
