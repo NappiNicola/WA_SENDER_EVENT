@@ -27,3 +27,17 @@ def read_log():
         with open(filename, "r", encoding="utf-8") as f:
             return f.read()
     return "Nessun log disponibile per oggi."
+
+def read_log_by_filename(filename):
+    file_path = os.path.join(LOG_DIR, filename)
+    if os.path.exists(file_path):
+        with open(file_path, "r", encoding="utf-8") as f:
+            return f.read()
+    else:
+        return "❌ File non trovato o eliminato."
+
+def return_all_log_files():
+    _ensure_log_dir()
+    solo_file = [f for f in os.listdir(LOG_DIR) if os.path.isfile(os.path.join(LOG_DIR, f))]
+    return solo_file  # Restituisce sempre una LISTA, anche vuota
+
