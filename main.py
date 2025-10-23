@@ -1,6 +1,5 @@
 from calendar_api import get_tomorrow_events
 from whatsapp_sender import extract_phone, send_whatsapp_message, extract_time
-# from config import API_URL, MY_PHONE
 from config_loader import API_URL, MY_PHONE
 from logger_module import write_log, read_log
 from logger_execution import write_log as write_ex, read_log as red_ex
@@ -8,9 +7,10 @@ from logger_execution import write_log as write_ex, read_log as red_ex
 def send_daily_reminder(phone):
     log_content = read_log()
     message = f"📅 Promemoria giornaliero:\n\n{log_content}"
-    send_whatsapp_message(phone, message)
+    for number in phone:
+        send_whatsapp_message(number, message)
 
-def main():
+def function_1():
     print("📅 Recupero eventi di domani...")
     events = get_tomorrow_events(API_URL)
 
@@ -45,6 +45,10 @@ def main():
         write_log("Invio completato.")
         write_ex("Invio completato.")
 
+def main():
+    function_1()
+    send_daily_reminder(MY_PHONE)
+
 if __name__ == "__main__":
     main()
-    send_daily_reminder(MY_PHONE)
+
