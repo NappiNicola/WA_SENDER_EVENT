@@ -1,4 +1,8 @@
 {
-  "API_URL":"your API exec",
-  "MY_PHONE":"your phone number"
+  "API_URL":"API URL",
+  "POST_ENDPOINT":"POST API URL",
+  "MY_PHONE":[
+    "phone_1",
+    "phone_n"
+    ]
 }
