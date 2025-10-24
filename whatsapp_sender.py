@@ -55,6 +55,7 @@ def start_whatsapp():
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
     driver.get("https://web.whatsapp.com/")
+    driver.fullscreen_window()
     print("🔄 Attendi il caricamento di WhatsApp Web...")
 
     # Attendi che l’utente scansioni il QR code la prima volta
