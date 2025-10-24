@@ -6,7 +6,8 @@ CONFIG_FILE = Path("config.json")
 DEFAULT_CONFIG = {
     "API_URL": "",
     "POST_ENDPOINT":"",
-    "MY_PHONE": []
+    "MY_PHONE": [],
+    "SEND_LOG":""
 }
 
 def load_config():
@@ -23,3 +24,4 @@ config = load_config()
 API_URL = config["API_URL"]
 MY_PHONE = config["MY_PHONE"]
 POST_ENDPOINT = config["POST_ENDPOINT"]
+SEND_LOG = config["SEND_LOG"]

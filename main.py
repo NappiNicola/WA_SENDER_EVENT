@@ -6,13 +6,12 @@ from whatsapp_sender import (
     send_whatsapp_message,
     close_whatsapp
 )
-from config_loader import API_URL, MY_PHONE
+from config_loader import API_URL, MY_PHONE, SEND_LOG
 from logger_module import write_log, read_log
 from logger_execution import write_log as write_ex, read_log as red_ex
 
 
 def send_daily_reminder(phone_list):
-    """Invia il promemoria giornaliero ai numeri di servizio (MY_PHONE)."""
     log_content = read_log()
     message = f"📅 Promemoria giornaliero:\n\n{log_content}"
 
@@ -66,7 +65,10 @@ def main():
     try:
         start_whatsapp()  # ✅ Avvia WhatsApp una sola volta
         function_1()
-        send_daily_reminder(MY_PHONE)
+        if SEND_LOG == "true":
+            send_daily_reminder(MY_PHONE)
+        else:
+            write_ex("Log non inviati al numero di servizio")
     finally:
         close_whatsapp()  # ✅ Chiude la sessione alla fine
 
