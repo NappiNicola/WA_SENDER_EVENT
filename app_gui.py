@@ -125,16 +125,26 @@ class CalendarNotifierApp:
             time_str = self.time_entry.get().strip()
             datetime.strptime(time_str, "%H:%M")
 
-            schedule.clear()
+            # ✅ Cancella solo i job duplicati della funzione mainF
+            for job in list(schedule.jobs):
+                if job.job_func == mainF:
+                    schedule.cancel_job(job)
+
+            # ✅ Pianifica un solo job
             schedule.every().day.at(time_str).do(mainF)
             self.running = True
             self.next_run_time = self.get_next_run_datetime(time_str)
 
-            threading.Thread(target=self.scheduler_loop, daemon=True).start()
-            self.update_countdown()
+            # Avvia il thread del loop solo se non già attivo
+            if not hasattr(self, "_scheduler_thread") or not self._scheduler_thread.is_alive():
+                self._scheduler_thread = threading.Thread(target=self.scheduler_loop, daemon=True)
+                self._scheduler_thread.start()
 
+            self.update_countdown()
             self.progress.start(10)
             self.status_label.config(text=f"Stato: Attivo ({time_str})", fg=self.success)
+            print(f"🕒 Scheduler impostato alle {time_str}")
+
         except ValueError:
             messagebox.showerror("Errore", "Formato orario non valido (usa HH:MM)")
 
