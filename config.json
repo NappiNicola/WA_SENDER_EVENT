@@ -4,5 +4,6 @@
   "MY_PHONE":[
     "phone_1",
     "phone_n"
-    ]
+    ],
+  "SEND_LOG":"true or false based if you want sent log on whatsapp service number"
 }
