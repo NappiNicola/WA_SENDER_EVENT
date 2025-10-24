@@ -94,42 +94,58 @@ def start_whatsapp():
 # ✉️ Invio messaggio
 # ==============================================================
 def send_whatsapp_message(phone: str, message: str):
-    """Invia un messaggio WhatsApp mantenendo gli a capo e la formattazione."""
+    """Invia un messaggio WhatsApp mantenendo gli a capo (compatibile con il layout aggiornato)."""
     global driver
     if not driver:
         start_whatsapp()
 
-    message_cleaned = format_message(message)
-
     try:
-        print(f"📨 Invio messaggio a {phone}...")
+        message_cleaned = format_message(message)
+        if not message_cleaned:
+            print(f"⚠️ Messaggio vuoto o non valido per {phone}.")
+            return
 
-        # 1️⃣ Apri la chat del numero (senza testo precompilato)
-        url = f"https://web.whatsapp.com/send?phone={phone}"
-        driver.get(url)
+        print(f"📨 Apertura chat di {phone}...")
+        driver.get(f"https://web.whatsapp.com/send?phone={phone}")
         driver.fullscreen_window()
+        time.sleep(10)  # attesa caricamento chat
 
-        # 2️⃣ Attendi caricamento chat
-        time.sleep(8)
+        # 🔍 Trova il campo di input messaggio (nuovo layout WhatsApp Web)
+        print("🔎 Ricerca campo messaggio...")
+        input_box = None
+        for _ in range(10):
+            try:
+                input_box = driver.find_element(
+                    By.XPATH,
+                    '//div[@contenteditable="true" and @data-tab="10"]'
+                )
+                if input_box:
+                    break
+            except:
+                time.sleep(1)
 
-        # 3️⃣ Trova il campo di input messaggio
-        input_box = driver.switch_to.active_element
+        if not input_box:
+            print("❌ Campo messaggio non trovato. Controlla che la chat sia aperta correttamente.")
+            return
 
-        # 4️⃣ Invia il messaggio riga per riga mantenendo la formattazione
-        for line in message_cleaned.split("\n"):
+        print("✍️ Scrittura messaggio...")
+
+        # Invio riga per riga con a capo reale
+        lines = message_cleaned.split("\n")
+        for i, line in enumerate(lines):
             input_box.send_keys(line)
-            input_box.send_keys(Keys.SHIFT, Keys.ENTER)  # vero a capo
+            if i < len(lines) - 1:
+                input_box.send_keys(Keys.SHIFT, Keys.ENTER)
+                time.sleep(0.1)
 
-        # 5️⃣ Invia il messaggio
+        # 🚀 Invio
         input_box.send_keys(Keys.ENTER)
-
         print(f"✅ Messaggio inviato correttamente a {phone}")
-        time.sleep(2)
+        time.sleep(3)
 
-    except (NoSuchElementException, TimeoutException) as e:
-        print(f"⚠️ Impossibile inviare il messaggio a {phone}: {e}")
     except Exception as e:
         print(f"❌ Errore durante l'invio a {phone}: {e}")
+
 
 
 # ==============================================================
