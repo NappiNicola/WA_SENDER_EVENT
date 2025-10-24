@@ -13,6 +13,30 @@ import os
 driver = None  # sessione globale Chrome
 
 
+# ==============================================================
+# 🔤 Formattazione messaggio
+# ==============================================================
+def format_message(message: str) -> str:
+    if not message:
+        return ""
+        # Normalizza le nuove righe
+    message = message.replace("\r\n", "\n").replace("\r", "\n").replace("\t", " ")
+
+    # Rimuove caratteri non BMP (es. alcune emoji o simboli particolari)
+    message = "".join(ch for ch in message if ord(ch) <= 0xFFFF)
+
+    # Divide e rimuove righe completamente vuote
+    lines = [line.strip() for line in message.split("\n") if line.strip()]
+
+    # Ricostruisce con un solo \n
+    formatted = "\n".join(lines)
+
+    return formatted.strip()
+
+
+# ==============================================================
+# 📞 Estrazione dati da testo
+# ==============================================================
 def extract_phone(text: str):
     match = re.search(r'\+?\d{8,15}', text or "")
     return match.group(0) if match else None
@@ -23,6 +47,9 @@ def extract_time(iso_string: str):
     return dt.strftime("%H:%M")
 
 
+# ==============================================================
+# 🌐 Gestione WhatsApp Web via Selenium
+# ==============================================================
 def start_whatsapp():
     """Avvia WhatsApp Web (riutilizzando la sessione precedente)."""
     global driver
@@ -40,7 +67,7 @@ def start_whatsapp():
     chrome_options.add_argument("--disable-extensions")
     chrome_options.add_argument("--disable-popup-blocking")
     chrome_options.add_argument("--start-maximized")
-    chrome_options.add_argument("--window-size=1280,800")
+    chrome_options.add_argument("--window-size=1920,1080")
     chrome_options.add_argument("--log-level=3")
     chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
     chrome_options.add_experimental_option("useAutomationExtension", False)
@@ -54,38 +81,49 @@ def start_whatsapp():
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
+    # Vai su WhatsApp Web
     driver.get("https://web.whatsapp.com/")
     driver.fullscreen_window()
-    print("🔄 Attendi il caricamento di WhatsApp Web...")
+    print("🔄 Attendi il caricamento di WhatsApp Web e la scansione del QR code (solo la prima volta)...")
 
-    # Attendi che l’utente scansioni il QR code la prima volta
     time.sleep(10)
     return driver
 
 
+# ==============================================================
+# ✉️ Invio messaggio
+# ==============================================================
 def send_whatsapp_message(phone: str, message: str):
-    """Invia un messaggio WhatsApp a un numero specifico usando Selenium."""
+    """Invia un messaggio WhatsApp mantenendo gli a capo e la formattazione."""
     global driver
     if not driver:
         start_whatsapp()
 
+    message_cleaned = format_message(message)
+
     try:
         print(f"📨 Invio messaggio a {phone}...")
 
-        # Apri la chat del numero (API ufficiale WhatsApp Web)
-        url = f"https://web.whatsapp.com/send?phone={phone}&text={message}"
+        # 1️⃣ Apri la chat del numero (senza testo precompilato)
+        url = f"https://web.whatsapp.com/send?phone={phone}"
         driver.get(url)
+        driver.fullscreen_window()
 
-        # Attendi il caricamento della chat
+        # 2️⃣ Attendi caricamento chat
         time.sleep(8)
 
-        # Premi Invio per inviare il messaggio
+        # 3️⃣ Trova il campo di input messaggio
         input_box = driver.switch_to.active_element
+
+        # 4️⃣ Invia il messaggio riga per riga mantenendo la formattazione
+        for line in message_cleaned.split("\n"):
+            input_box.send_keys(line)
+            input_box.send_keys(Keys.SHIFT, Keys.ENTER)  # vero a capo
+
+        # 5️⃣ Invia il messaggio
         input_box.send_keys(Keys.ENTER)
 
         print(f"✅ Messaggio inviato correttamente a {phone}")
-
-        # Attendi qualche secondo per sicurezza
         time.sleep(2)
 
     except (NoSuchElementException, TimeoutException) as e:
@@ -94,6 +132,9 @@ def send_whatsapp_message(phone: str, message: str):
         print(f"❌ Errore durante l'invio a {phone}: {e}")
 
 
+# ==============================================================
+# 🔚 Chiusura browser
+# ==============================================================
 def close_whatsapp():
     """Chiude il browser WhatsApp Web."""
     global driver
